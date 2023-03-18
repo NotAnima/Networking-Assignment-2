@@ -1,0 +1,4 @@
+python -m pip install gpiozero
+python -m pip install fswebcam
+python -m pip install ffmpeg
+python -m pip install requests
