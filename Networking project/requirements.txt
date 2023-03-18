@@ -1,4 +1,2 @@
-python -m pip install gpiozero
-python -m pip install fswebcam
-python -m pip install ffmpeg
-python -m pip install requests
+gpiozero == 1.6.2
+requests == 2.28.2
