@@ -1,0 +1,12 @@
+Dependencies:
+1) Raspian Buster with desktop and recommended software flash the OS onto microSD
+2) Download the python scripts by downloading onto laptop and then just copy and paste them
+^ save them under documents folder. Home>Pi>Documents
+3) sudo apt-get update
+4) sudo apt-get upgrade -y Get Pi system up to date
+5) setup the camera and use sudo raspi-config to enable the camera
+6) sudo apt-get install python-dev
+7) sudo apt-get install python-pip
+8) sudo pip3 install evdev (evdev lets you send events to control using an external peripheral)
+9) Run findDeviceName.py to get the name of the device element: ' name "Logitech xxxx"' for example <-- take the whole string
+10) 
