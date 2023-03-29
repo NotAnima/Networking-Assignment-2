@@ -155,7 +155,6 @@ def handle(connection, addressOfClient):
 
 
 def main():
-    print("#220 Server is starting up")
     PORT = int(input("Choose a port number not including 1-1023 which are basic ports: "))
     IP = socket.gethostbyname(socket.gethostname()) #dynamically assigns hostname
     ADDR = (IP, PORT)
@@ -164,6 +163,7 @@ def main():
         server.bind(ADDR) #binds the specific IP address and port
         server.listen() #waiting for client to connect
         try:
+            print("#220 Server is starting up")
             print("Server is now listening for clients on port" + str(ADDR))
             while True:
                 connection, address = server.accept() #accepts the client
