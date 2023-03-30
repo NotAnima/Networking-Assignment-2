@@ -8,7 +8,7 @@ IP = socket.gethostbyname(socket.gethostname()) #dynamically assigns hostname
 BUFFER = 1024
 FORMAT = "utf-8"
 CLIENT_DATA_PATH = "client_data"
-RFC_List = ["#212", "#220", "#221", "#125", "#225", "#226", "#426", "#500", "#200", "#451", "#550" ]#426 for no override #500 for invalid command 200 for "OK" #451 for some server error
+RFC_List = ["212", "220", "221", "125", "225", "226", "426", "500", "200", "451", "550" ]#426 for no override #500 for invalid command 200 for "OK" #451 for some server error
 #directory status (for list), service ready for connection ready, disconnecting from server, Data connection open, for file transfers, Data connection open, no transfer in progress (for overriding), after successful transfers
 commands = ['LIST','UPLD','DWLD','DELF','RNTO','QUIT']
 def handle_list(client):
@@ -24,10 +24,9 @@ def handle_upload(client, filename, filesize):
             client.sendall(chunk)
             bytes_Sent += BUFFER
         if bytes_Sent >= filesize:
-            #print(f"Successfully uploaded file: {filename} to the Server")
             return
 def handle_override(client, filename, filesize, userInput):
-    if userInput == "Y":
+    if userInput.upper() == "Y":
         client.sendall("OVERRIDE".encode(FORMAT))
         with open(os.path.join(CLIENT_DATA_PATH, filename), "rb") as file: #file writing in binary
             bytes_Sent = 0
@@ -38,17 +37,17 @@ def handle_override(client, filename, filesize, userInput):
                 client.sendall(chunk)
                 bytes_Sent += BUFFER
             if bytes_Sent >= filesize:
-                return #print(f"Successfully overrided file: {filename} on the Server")
+                return 
     else:
         client.sendall("PASS".encode(FORMAT))
         return
 
 def handle_download(client, replyFromServer, filename):
 
-    if replyFromServer[0] == "#550": #server does not have this file
-        client.sendall("#200".encode(FORMAT))
+    if replyFromServer[0] == "550": #server does not have this file
+        client.sendall("200".encode(FORMAT))
 
-    elif replyFromServer[0] == "#225":
+    elif replyFromServer[0] == "225":
         filesize = int(replyFromServer[1])
         with open(os.path.join(CLIENT_DATA_PATH, filename), "wb") as file: #file writing in binary
             bytes_received = 0
@@ -74,16 +73,13 @@ def main():
             data = client.recv(BUFFER).decode(FORMAT)
             cmd, message = data.split("@")
             if cmd in RFC_List:
-                if cmd != "#221":
+                if cmd != "221":
                     print(cmd+ "\n" + message)
                 else:
                     print(cmd+ "\n"  + message)
                     break
             else:
                 print(message)
-            #elif cmd == "DISCONNECTED":
-            #   print(message)
-            #  break
             data = input("> ")
             data = data.split(" ")
             cmd = data[0]
